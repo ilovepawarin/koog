@@ -13,7 +13,6 @@ kotlin {
         commonMain {
             dependencies {
                 api(project(":agents:agents-core"))
-                api(project(":agents:agents-features:agents-features-common"))
                 api(project(":agents:agents-features:agents-features-snapshot"))
                 api(project(":rag:rag-base"))
 
