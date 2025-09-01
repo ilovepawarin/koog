@@ -131,14 +131,6 @@ class SQLPersistenceProvidersTest {
         // H2
         assertNotNull(H2PersistencyStorageProvider.inMemory("test", "test_db"))
 
-        // SQLite
-        assertNotNull(
-            SQLitePersistencyStorageProvider(
-                persistenceId = "test",
-                databasePath = ":memory:"
-            )
-        )
-
         // PostgreSQL
         assertNotNull(
             PostgresPersistencyStorageProvider(

@@ -87,21 +87,8 @@ H2PersistencyStorageProvider.fileBased(
     filePath = "./data/h2/agent_checkpoints"
 )
 ```
-
 ### SQLite (Embedded)
 
-```kotlin
-// In-memory
-SQLitePersistencyStorageProvider.inMemory(
-    persistenceId = "test-agent"
-)
-
-// File-based
-SQLitePersistencyStorageProvider.fileBased(
-    persistenceId = "my-agent",
-    filePath = "./data/sqlite/checkpoints.db"
-)
-```
 
 ## Connection Pool Monitoring
 

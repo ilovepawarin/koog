@@ -3,7 +3,6 @@ package ai.koog.agents.example.snapshot.sql
 import ai.koog.agents.features.sql.providers.H2PersistencyStorageProvider
 import ai.koog.agents.features.sql.providers.MySQLPersistencyStorageProvider
 import ai.koog.agents.features.sql.providers.PostgresPersistencyStorageProvider
-import ai.koog.agents.features.sql.providers.SQLitePersistencyStorageProvider
 import ai.koog.agents.snapshot.feature.AgentCheckpointData
 import ai.koog.prompt.message.Message
 import ai.koog.prompt.message.RequestMetaInfo
@@ -30,11 +29,8 @@ object SQLPersistentAgentExample {
             "postgres" -> postgresqlExample()
             "mysql" -> mysqlExample()
             "h2" -> h2Example()
-            "sqlite" -> sqliteExample()
             else -> {
-                println("Usage: SQLPersistentAgentExample [postgres|mysql|h2|sqlite]")
-                println("\nRunning SQLite example by default...\n")
-                sqliteExample()
+                println("Usage: SQLPersistentAgentExample [postgres|mysql|h2]")
             }
         }
     }
@@ -170,30 +166,6 @@ object SQLPersistentAgentExample {
         inMemoryProvider.close()
         fileProvider.close()
         pgCompatProvider.close()
-    }
-
-    /**
-     * SQLite persistence example
-     */
-    private fun sqliteExample() {
-        println("SQLite Persistence Example")
-        println("--------------------------")
-
-        println("\nSQLite provider supports:")
-        println("- In-memory databases for testing")
-        println("- File-based persistence")
-        println("- Temporary databases")
-        println("- VACUUM and integrity check operations")
-
-        // Just show instantiation works
-        val provider = SQLitePersistencyStorageProvider.inMemory(
-            persistenceId = "sqlite-demo",
-            pragmas = emptyMap()
-        )
-
-        println("\nProvider created successfully!")
-        println("Note: Due to SQLite transaction limitations with PRAGMAs,")
-        println("full example requires careful configuration.")
     }
 
     /**
