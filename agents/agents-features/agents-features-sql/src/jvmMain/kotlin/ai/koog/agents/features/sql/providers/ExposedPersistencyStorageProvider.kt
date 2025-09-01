@@ -136,7 +136,7 @@ public abstract class ExposedPersistencyStorageProvider(
         public val checkpointJson: Column<String> = text("checkpoint_json")
         public val ttlTimestamp: Column<Long?> = long("ttl_timestamp").nullable().index()
 
-        override val primaryKey: Table.PrimaryKey = PrimaryKey(persistenceId, checkpointId)
+        override val primaryKey: PrimaryKey = PrimaryKey(persistenceId, checkpointId)
 
         init {
             // Create composite index for efficient queries

@@ -2,7 +2,6 @@ package ai.koog.agents.features.sql.providers
 
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.TransactionManager
-import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 import java.sql.ResultSet
 
@@ -85,15 +84,19 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
     private var pragmas: Map<String, String> = emptyMap()
     private var pragmasApplied = false
 
+    /**
+     * Companion object for `SQLitePersistencyStorageProvider`.
+     * Provides utility methods for creating and configuring SQLite persistence providers.
+     */
     public companion object {
         /**
          * Default PRAGMA settings for optimal performance and safety.
          */
         public fun defaultPragmas(): Map<String, String> = mapOf(
-            "journal_mode" to "WAL", // Write-Ahead Logging for better concurrency
-            "synchronous" to "NORMAL", // Good balance of safety and performance
-            "foreign_keys" to "ON", // Enable foreign key constraints
-            "busy_timeout" to "5000" // Wait up to 5 seconds for locks
+//            "journal_mode" to "WAL", // Write-Ahead Logging for better concurrency
+////            "synchronous" to "NORMAL", // Good balance of safety and performance
+//            "foreign_keys" to "ON", // Enable foreign key constraints
+//            "busy_timeout" to "5000" // Wait up to 5 seconds for locks
         )
 
         /**

@@ -130,6 +130,9 @@ public class H2PersistencyStorageProvider : ExposedPersistencyStorageProvider {
 
     private var dataSource: HikariDataSource? = null
 
+    /**
+     * Companion object for creating various configurations of H2PersistencyStorageProvider.
+     */
     public companion object {
         /**
          * Creates an in-memory H2 provider.
