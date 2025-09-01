@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.Database
  * MySQL-specific implementation of [ExposedPersistencyStorageProvider] for managing
  * agent checkpoints in MySQL databases.
  *
- * This provider is optimized for MySQL 5.7+ and MariaDB 10.2+, leveraging their 
+ * This provider is optimized for MySQL 5.7+ and MariaDB 10.2+, leveraging their
  * JSON column support for efficient checkpoint storage.
  *
  * ## Connection Options:
@@ -51,7 +51,7 @@ import org.jetbrains.exposed.sql.Database
  * @constructor Initializes the MySQL persistence provider with connection details.
  */
 public class MySQLPersistencyStorageProvider : ExposedPersistencyStorageProvider {
-    
+
     /**
      * Creates a provider with a JDBC URL and credentials.
      *
@@ -80,7 +80,7 @@ public class MySQLPersistencyStorageProvider : ExposedPersistencyStorageProvider
         tableName = tableName,
         ttlSeconds = ttlSeconds
     )
-    
+
     /**
      * Creates a provider with HikariCP configuration for advanced pooling.
      *
@@ -102,7 +102,7 @@ public class MySQLPersistencyStorageProvider : ExposedPersistencyStorageProvider
     ) {
         this.dataSource = HikariDataSource(hikariConfig)
     }
-    
+
     /**
      * Creates a provider with an existing HikariDataSource.
      *
@@ -124,9 +124,9 @@ public class MySQLPersistencyStorageProvider : ExposedPersistencyStorageProvider
     ) {
         this.dataSource = dataSource
     }
-    
+
     private var dataSource: HikariDataSource? = null
-    
+
     /**
      * Closes the data source if it was created by this provider.
      * Should be called when the provider is no longer needed.
@@ -134,7 +134,7 @@ public class MySQLPersistencyStorageProvider : ExposedPersistencyStorageProvider
     override fun close() {
         dataSource?.close()
     }
-    
+
     /**
      * Returns connection pool statistics if using HikariCP.
      * Useful for monitoring connection usage and performance.
@@ -150,7 +150,7 @@ public class MySQLPersistencyStorageProvider : ExposedPersistencyStorageProvider
             )
         }
     }
-    
+
     /**
      * Connection pool statistics for monitoring.
      */

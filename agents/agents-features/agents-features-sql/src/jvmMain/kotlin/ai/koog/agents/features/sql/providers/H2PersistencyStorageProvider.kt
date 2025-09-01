@@ -54,7 +54,7 @@ import org.jetbrains.exposed.sql.Database
  * @constructor Initializes the H2 persistence provider with connection details.
  */
 public class H2PersistencyStorageProvider : ExposedPersistencyStorageProvider {
-    
+
     /**
      * Creates a provider with a JDBC URL and credentials.
      *
@@ -83,7 +83,7 @@ public class H2PersistencyStorageProvider : ExposedPersistencyStorageProvider {
         tableName = tableName,
         ttlSeconds = ttlSeconds
     )
-    
+
     /**
      * Creates a provider with HikariCP configuration for advanced pooling.
      *
@@ -105,7 +105,7 @@ public class H2PersistencyStorageProvider : ExposedPersistencyStorageProvider {
     ) {
         this.dataSource = HikariDataSource(hikariConfig)
     }
-    
+
     /**
      * Creates a provider with an existing HikariDataSource.
      *
@@ -127,9 +127,9 @@ public class H2PersistencyStorageProvider : ExposedPersistencyStorageProvider {
     ) {
         this.dataSource = dataSource
     }
-    
+
     private var dataSource: HikariDataSource? = null
-    
+
     public companion object {
         /**
          * Creates an in-memory H2 provider.
@@ -157,7 +157,7 @@ public class H2PersistencyStorageProvider : ExposedPersistencyStorageProvider {
                 ttlSeconds = ttlSeconds
             )
         }
-        
+
         /**
          * Creates a file-based H2 provider.
          * Data is persisted to a file on disk.
@@ -188,7 +188,7 @@ public class H2PersistencyStorageProvider : ExposedPersistencyStorageProvider {
                 ttlSeconds = ttlSeconds
             )
         }
-        
+
         /**
          * Creates an H2 provider with PostgreSQL compatibility mode.
          * Useful when migrating from PostgreSQL or for compatibility testing.
@@ -213,7 +213,7 @@ public class H2PersistencyStorageProvider : ExposedPersistencyStorageProvider {
             )
         }
     }
-    
+
     /**
      * Closes the data source if it was created by this provider.
      * Should be called when the provider is no longer needed.
@@ -221,7 +221,7 @@ public class H2PersistencyStorageProvider : ExposedPersistencyStorageProvider {
     override fun close() {
         dataSource?.close()
     }
-    
+
     /**
      * Returns connection pool statistics if using HikariCP.
      * Useful for monitoring connection usage and performance.
@@ -237,7 +237,7 @@ public class H2PersistencyStorageProvider : ExposedPersistencyStorageProvider {
             )
         }
     }
-    
+
     /**
      * Connection pool statistics for monitoring.
      */

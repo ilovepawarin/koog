@@ -1,7 +1,6 @@
 package ai.koog.agents.features.sql.providers
 
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
@@ -11,7 +10,7 @@ import java.sql.ResultSet
  * SQLite-specific implementation of [ExposedPersistencyStorageProvider] for managing
  * agent checkpoints in SQLite databases.
  *
- * SQLite is a self-contained, serverless, zero-configuration database engine that's 
+ * SQLite is a self-contained, serverless, zero-configuration database engine that's
  * ideal for:
  * - Embedded applications
  * - Local data storage
@@ -56,7 +55,7 @@ import java.sql.ResultSet
  * @constructor Initializes the SQLite persistence provider.
  */
 public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvider {
-    
+
     /**
      * Creates a provider with a file-based SQLite database.
      *
@@ -81,11 +80,11 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
         this.databasePath = databasePath
         this.pragmas = pragmas
     }
-    
+
     private var databasePath: String? = null
     private var pragmas: Map<String, String> = emptyMap()
     private var pragmasApplied = false
-    
+
     public companion object {
         /**
          * Default PRAGMA settings for optimal performance and safety.
@@ -96,7 +95,7 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
             "foreign_keys" to "ON", // Enable foreign key constraints
             "busy_timeout" to "5000" // Wait up to 5 seconds for locks
         )
-        
+
         /**
          * Creates an in-memory SQLite provider.
          * Data is lost when the connection is closed.
@@ -118,7 +117,7 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
                 pragmas = pragmas
             )
         }
-        
+
         /**
          * Creates a temporary SQLite provider.
          * Database file is created in the system temp directory.
@@ -139,7 +138,7 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
         ): SQLitePersistencyStorageProvider {
             val tempFile = File.createTempFile(prefix, ".db")
             tempFile.deleteOnExit()
-            
+
             return SQLitePersistencyStorageProvider(
                 persistenceId = persistenceId,
                 databasePath = tempFile.absolutePath,
@@ -148,7 +147,7 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
                 pragmas = pragmas
             )
         }
-        
+
         /**
          * Creates a SQLite database with the specified PRAGMA settings.
          */
@@ -160,7 +159,7 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
             )
         }
     }
-    
+
     /**
      * Applies PRAGMA settings to the database connection.
      * This is done separately from database creation to avoid transaction issues.
@@ -175,14 +174,14 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
             pragmasApplied = true
         }
     }
-    
+
     public override suspend fun initializeSchema() {
         // Apply PRAGMAs first
         applyPragmas()
         // Then create schema
         super.initializeSchema()
     }
-    
+
     /**
      * Optimizes the database by running VACUUM.
      * This reclaims unused space and can improve performance.
@@ -193,7 +192,7 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
             TransactionManager.current().exec("VACUUM")
         }
     }
-    
+
     /**
      * Runs an integrity check on the database.
      * Returns true if the database passes all checks.
@@ -206,7 +205,7 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
             result == "ok"
         }
     }
-    
+
     /**
      * Gets the current size of the database file in bytes.
      * Returns null for in-memory databases.
@@ -220,7 +219,7 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
             }
         }
     }
-    
+
     /**
      * Enables or disables foreign key constraints.
      * Useful for bulk operations or migrations.
@@ -230,7 +229,7 @@ public class SQLitePersistencyStorageProvider : ExposedPersistencyStorageProvide
             TransactionManager.current().exec("PRAGMA foreign_keys = ${if (enabled) "ON" else "OFF"}")
         }
     }
-    
+
     /**
      * Sets the busy timeout in milliseconds.
      * Determines how long SQLite waits for locks.

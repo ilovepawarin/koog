@@ -2,10 +2,7 @@ package ai.koog.agents.features.sql.providers
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.DatabaseConfig
-import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
@@ -64,7 +61,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
  * @constructor Initializes the PostgreSQL persistence provider with connection details.
  */
 public class PostgresPersistencyStorageProvider : ExposedPersistencyStorageProvider {
-    
+
     /**
      * Creates a provider with a JDBC URL and credentials.
      *
@@ -96,7 +93,7 @@ public class PostgresPersistencyStorageProvider : ExposedPersistencyStorageProvi
         ttlSeconds = ttlSeconds,
         cleanupConfig = cleanupConfig
     )
-    
+
     /**
      * Creates a provider with HikariCP configuration for advanced pooling.
      *
@@ -121,7 +118,7 @@ public class PostgresPersistencyStorageProvider : ExposedPersistencyStorageProvi
     ) {
         this.dataSource = HikariDataSource(hikariConfig)
     }
-    
+
     /**
      * Creates a provider with an existing HikariDataSource.
      *
@@ -146,36 +143,38 @@ public class PostgresPersistencyStorageProvider : ExposedPersistencyStorageProvi
     ) {
         this.dataSource = dataSource
     }
-    
+
     private var dataSource: HikariDataSource? = null
-    
+
     /**
      * PostgreSQL-optimized table with JSONB column.
      */
     override val checkpointsTable: PostgresCheckpointsTable = PostgresCheckpointsTable(tableName)
-    
+
     /**
      * PostgreSQL-specific table definition.
      * Note: Currently uses TEXT for JSON storage. Future versions may use JSONB when Exposed adds better support.
      */
     public class PostgresCheckpointsTable(tableName: String) : CheckpointsTable(tableName)
-    
+
     override suspend fun initializeSchema() {
         super.initializeSchema()
-        
+
         // Create PostgreSQL-specific indexes for better performance
         transaction(database) {
-            exec("""
+            exec(
+                """
                 CREATE INDEX IF NOT EXISTS idx_${tableName}_ttl_cleanup 
                 ON $tableName(ttl_timestamp) 
                 WHERE ttl_timestamp IS NOT NULL
-            """.trimIndent())
-            
+                """.trimIndent()
+            )
+
             // Note: GIN index would be added here when using JSONB columns
             // Currently using TEXT column for JSON storage
         }
     }
-    
+
     /**
      * Closes the data source if it was created by this provider.
      * Should be called when the provider is no longer needed.
@@ -183,7 +182,7 @@ public class PostgresPersistencyStorageProvider : ExposedPersistencyStorageProvi
     override fun close() {
         dataSource?.close()
     }
-    
+
     /**
      * Returns connection pool statistics if using HikariCP.
      * Useful for monitoring connection usage and performance.
@@ -199,7 +198,7 @@ public class PostgresPersistencyStorageProvider : ExposedPersistencyStorageProvi
             )
         }
     }
-    
+
     /**
      * Connection pool statistics for monitoring.
      */
